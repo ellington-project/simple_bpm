@@ -39,6 +39,33 @@ impl SimpleEstimator {
         }
     }
 
+    // allow the user to select one of a few reasonable estimators
+    // the higher accuracy, the slower the estimator
+    pub fn with_accuracy(level: u32) -> SimpleEstimator {
+        match level {
+            // Mean Squared Error, Error of mean, Mean Time
+            // 1338.09,      5.34, 59.55
+            0 => SimpleEstimator::with_settings(32, 800, 1024),
+            // 1663.39, 7.14, 172.28
+            1 => SimpleEstimator::with_settings(256, 3200, 1024),
+            // 340.02, 1.16, 102.65
+            2 => SimpleEstimator::with_settings(96, 800, 2048),
+            // 339.93, 1.58, 98.23
+            3 => SimpleEstimator::with_settings(128, 800, 2048),
+            // 1002.36, 4.05, 87.05
+            4 => SimpleEstimator::with_settings(512, 800, 2048),
+            // 8.92, 0.11, 173.27
+            5 => SimpleEstimator::with_settings(256, 1600, 2048),
+            // 338.11, 1.31, 442.56
+            6 => SimpleEstimator::with_settings(32, 3200, 2048),
+            // 7.36, 0.13, 339.88
+            7 => SimpleEstimator::with_settings(512, 3200, 2048),
+            // 5.84, 0.06, 198.03
+            8 => SimpleEstimator::with_settings(96, 800, 4096),
+            _ => SimpleEstimator::default(),
+        }
+    }
+
     pub fn with_settings(interval: u64, steps: u32, samples: u32) -> SimpleEstimator {
         SimpleEstimator {
             lower: 50.0,
@@ -49,33 +76,6 @@ impl SimpleEstimator {
             samples: samples,
             rng: thread_rng(),
         }
-    }
-
-    pub fn small_range() -> Vec<SimpleEstimator> {
-        let intervals = vec![16, 64, 256];
-        let steps = vec![200, 800, 1600];
-        let samples = vec![512, 1024, 4096];
-
-        iproduct!(intervals, steps, samples)
-            .map(|(interval, step, samples)| Self::with_settings(interval, step, samples))
-            .collect()
-    }
-
-    pub fn large_range() -> Vec<SimpleEstimator> {
-        let intervals = vec![8, 16, 32, 64, 128, 256, 512];
-        let steps = vec![200, 400, 800, 1600, 3200];
-        let samples = vec![512, 1024, 2048, 4096, 8192];
-
-        iproduct!(intervals, steps, samples)
-            .map(|(interval, step, samples)| Self::with_settings(interval, step, samples))
-            .collect()
-    }
-
-    pub fn settings(&self) -> String {
-        format!(
-            "[i: {}, st: {}, sm: {}]",
-            self.interval, self.steps, self.samples
-        )
     }
 
     /*
