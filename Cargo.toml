@@ -1,0 +1,10 @@
+[package]
+name = "simple_bpm"
+version = "0.1.0"
+authors = ["Adam Harries <adam.harries@codeplay.com>"]
+edition = "2018"
+
+[dependencies]
+rand = "0.6.5"
+itertools="0.6.5"
+itertools-num = "0.1.3"
