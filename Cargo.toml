@@ -6,6 +6,7 @@ edition = "2018"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 description = "An experimental testbed and set of tools for the automatic tempo estimation of swing music"
+repository = "https://github.com/AdamHarries/simple_bpm"
 
 
 [dependencies]
