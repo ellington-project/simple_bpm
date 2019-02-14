@@ -1,8 +1,12 @@
 [package]
 name = "simple_bpm"
 version = "0.1.0"
-authors = ["Adam Harries <adam.harries@codeplay.com>"]
+authors = ["Adam Harries <harries.adam@gmail.com>"]
 edition = "2018"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+description = "An experimental testbed and set of tools for the automatic tempo estimation of swing music"
+
 
 [dependencies]
 rand = "0.6.5"
