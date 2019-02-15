@@ -41,29 +41,40 @@ impl SimpleEstimator {
 
     // allow the user to select one of a few reasonable estimators
     // the higher accuracy, the slower the estimator
+    // The accuracies roughly correspond to low/medium/high
     pub fn with_accuracy(level: u32) -> SimpleEstimator {
         match level {
-            // Mean Squared Error, Error of mean, Mean Time
-            // 1338.09,      5.34, 59.55
-            0 => SimpleEstimator::with_settings(32, 800, 1024),
-            // 1663.39, 7.14, 172.28
-            1 => SimpleEstimator::with_settings(256, 3200, 1024),
-            // 340.02, 1.16, 102.65
-            2 => SimpleEstimator::with_settings(96, 800, 2048),
-            // 339.93, 1.58, 98.23
-            3 => SimpleEstimator::with_settings(128, 800, 2048),
-            // 1002.36, 4.05, 87.05
-            4 => SimpleEstimator::with_settings(512, 800, 2048),
-            // 8.92, 0.11, 173.27
-            5 => SimpleEstimator::with_settings(256, 1600, 2048),
-            // 338.11, 1.31, 442.56
-            6 => SimpleEstimator::with_settings(32, 3200, 2048),
-            // 7.36, 0.13, 339.88
-            7 => SimpleEstimator::with_settings(512, 3200, 2048),
-            // 5.84, 0.06, 198.03
-            8 => SimpleEstimator::with_settings(96, 800, 4096),
+            // Interval,Steps,Samples,MeanBpm,MeanSqErr,ErrOfMean,MinTime,MeanTime
+            // 2048    ,800  ,2048   ,207.89 ,37.51    ,1.41     ,81.91  ,83.26
+            0 => SimpleEstimator::with_settings(2048, 800, 2048),
+            // 128     ,1600 ,2048   ,206.91 ,16.64    ,0.93     ,168.97 ,171.1
+            1 => SimpleEstimator::with_settings(128, 1600, 2048),
+            // 256     ,800  ,8192   ,206.14 ,4.98     ,0.55     ,325.41 ,328.31
+            2 => SimpleEstimator::with_settings(256, 800, 8192),
             _ => SimpleEstimator::default(),
         }
+        // match level {
+        //     // Mean Squared Error, Error of mean, Mean Time
+        //     // 1338.09,      5.34, 59.55
+        //     0 => SimpleEstimator::with_settings(32, 800, 1024),
+        //     // 1663.39, 7.14, 172.28
+        //     1 => SimpleEstimator::with_settings(256, 3200, 1024),
+        //     // 340.02, 1.16, 102.65
+        //     2 => SimpleEstimator::with_settings(96, 800, 2048),
+        //     // 339.93, 1.58, 98.23
+        //     3 => SimpleEstimator::with_settings(128, 800, 2048),
+        //     // 1002.36, 4.05, 87.05
+        //     4 => SimpleEstimator::with_settings(512, 800, 2048),
+        //     // 8.92, 0.11, 173.27
+        //     5 => SimpleEstimator::with_settings(256, 1600, 2048),
+        //     // 338.11, 1.31, 442.56
+        //     6 => SimpleEstimator::with_settings(32, 3200, 2048),
+        //     // 7.36, 0.13, 339.88
+        //     7 => SimpleEstimator::with_settings(512, 3200, 2048),
+        //     // 5.84, 0.06, 198.03
+        //     8 => SimpleEstimator::with_settings(96, 800, 4096),
+        //     _ => SimpleEstimator::default(),
+        // }
     }
 
     pub fn with_settings(interval: u64, steps: u32, samples: u32) -> SimpleEstimator {

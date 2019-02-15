@@ -17,7 +17,7 @@ fn read_audiof(filename: PathBuf) -> Vec<f32> {
     state.flatten().cloned().collect()
 }
 
-fn bench_default_estimator(c: &mut Criterion) {
+fn bench_estimator_default(c: &mut Criterion) {
     let samples = read_audiof(PathBuf::from(
         "/home/adam/Music/The Holophonics - Despacito.mp3",
     ));
@@ -27,7 +27,7 @@ fn bench_default_estimator(c: &mut Criterion) {
     });
 }
 
-fn bench_estimator_a(c: &mut Criterion) {
+fn bench_estimator_fast(c: &mut Criterion) {
     /*
         Fast, high error
         This should give a mean squared error of about 9.6
@@ -35,13 +35,13 @@ fn bench_estimator_a(c: &mut Criterion) {
     let samples = read_audiof(PathBuf::from(
         "/home/adam/Music/The Holophonics - Despacito.mp3",
     ));
-    let mut estimator = SimpleEstimator::with_settings(512, 400, 8192);
+    let mut estimator = SimpleEstimator::with_accuracy(0);
     c.bench_function("fast-high-error", move |b| {
         b.iter(|| estimator.analyse(samples.iter().cloned()))
     });
 }
 
-fn bench_estimator_b(c: &mut Criterion) {
+fn bench_estimator_medium(c: &mut Criterion) {
     /*
         Slower, low error
         This should give a mean squared error of about 2.27
@@ -49,13 +49,13 @@ fn bench_estimator_b(c: &mut Criterion) {
     let samples = read_audiof(PathBuf::from(
         "/home/adam/Music/The Holophonics - Despacito.mp3",
     ));
-    let mut estimator = SimpleEstimator::with_settings(256, 1600, 8192);
+    let mut estimator = SimpleEstimator::with_accuracy(1);
     c.bench_function("slow-low-error", move |b| {
         b.iter(|| estimator.analyse(samples.iter().cloned()))
     });
 }
 
-fn bench_estimator_c(c: &mut Criterion) {
+fn bench_estimator_slow(c: &mut Criterion) {
     /*
         Medium, medium error
         This should give a mean squared error of about 4.78
@@ -63,7 +63,7 @@ fn bench_estimator_c(c: &mut Criterion) {
     let samples = read_audiof(PathBuf::from(
         "/home/adam/Music/The Holophonics - Despacito.mp3",
     ));
-    let mut estimator = SimpleEstimator::with_settings(256, 800, 8192);
+    let mut estimator = SimpleEstimator::with_accuracy(2);
     c.bench_function("medium-medium-error", move |b| {
         b.iter(|| estimator.analyse(samples.iter().cloned()))
     });
@@ -71,9 +71,9 @@ fn bench_estimator_c(c: &mut Criterion) {
 
 criterion_group!(
     benches,
-    bench_default_estimator,
-    bench_estimator_a,
-    bench_estimator_b,
-    bench_estimator_c
+    bench_estimator_default,
+    bench_estimator_fast,
+    bench_estimator_medium,
+    bench_estimator_slow
 );
 criterion_main!(benches);
