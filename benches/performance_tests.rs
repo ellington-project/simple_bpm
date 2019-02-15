@@ -171,7 +171,8 @@ fn bench_tracks(c: &mut Criterion) {
                 SimpleEstimator::with_accuracy(a.as_arg())
                     .analyse(DATA.get(&Track::Things).iter().cloned())
             })
-        }),
+        })
+        .sample_size(15),
     );
 }
 
@@ -182,7 +183,7 @@ fn bench_estimators(c: &mut Criterion) {
     let mut slow = SimpleEstimator::with_accuracy(Accuracy::Slow.as_arg());
 
     c.bench(
-        "fast-high-error",
+        "estimators",
         ParameterizedBenchmark::new(
             "fast",
             move |b, p| b.iter(|| unsafe { fast.analyse(DATA.get(p).iter().cloned()) }),
@@ -193,7 +194,8 @@ fn bench_estimators(c: &mut Criterion) {
         })
         .with_function("slow", move |b, p| {
             b.iter(|| unsafe { slow.analyse(DATA.get(p).iter().cloned()) })
-        }),
+        })
+        .sample_size(15),
     );
 }
 
