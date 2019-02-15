@@ -9,8 +9,6 @@ use rand::{thread_rng, Rng};
 
 use itertools_num::linspace;
 
-use itertools::iproduct;
-
 use std::f32;
 
 #[derive(Debug)]
