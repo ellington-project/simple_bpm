@@ -126,7 +126,7 @@ fn bench_estimator_fast(c: &mut Criterion) {
 
 fn bench_estimator_medium(c: &mut Criterion) {
     unsafe { DATA.init() }
-    let mut estimator = SimpleEstimator::with_accuracy(2);
+    let mut estimator = SimpleEstimator::with_accuracy(1);
 
     c.bench(
         "medium-medium-error",
@@ -140,7 +140,7 @@ fn bench_estimator_medium(c: &mut Criterion) {
 
 fn bench_estimator_slow(c: &mut Criterion) {
     unsafe { DATA.init() }
-    let mut estimator = SimpleEstimator::with_accuracy(1);
+    let mut estimator = SimpleEstimator::with_accuracy(2);
 
     c.bench(
         "slow-low-error",
