@@ -94,7 +94,168 @@ impl Data {
     }
 }
 
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
+enum Accuracy {
+    Fast,
+    Medium,
+    Slow,
+}
+
+impl Accuracy {
+    fn as_arg(&self) -> u32 {
+        match self {
+            Accuracy::Fast => 0,
+            Accuracy::Medium => 1,
+            Accuracy::Slow => 2,
+        }
+    }
+}
+
 static mut DATA: Data = Data { audio_d: None };
+
+fn bench_bess(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Bess)
+    };
+
+    c.bench(
+        "bess",
+        ParameterizedBenchmark::new(
+            "bess",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_blues(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Blues)
+    };
+
+    c.bench(
+        "blues",
+        ParameterizedBenchmark::new(
+            "blues",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_campus(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Campus)
+    };
+
+    c.bench(
+        "campus",
+        ParameterizedBenchmark::new(
+            "campus",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_rabbits(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Rabbits)
+    };
+
+    c.bench(
+        "rabbits",
+        ParameterizedBenchmark::new(
+            "rabbits",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_rent(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Rent)
+    };
+
+    c.bench(
+        "rent",
+        ParameterizedBenchmark::new(
+            "rent",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_squatty(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Squatty)
+    };
+
+    c.bench(
+        "squatty",
+        ParameterizedBenchmark::new(
+            "squatty",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_stars(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Stars)
+    };
+
+    c.bench(
+        "stars",
+        ParameterizedBenchmark::new(
+            "stars",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
+
+fn bench_things(c: &mut Criterion) {
+    let data = unsafe {
+        DATA.init();
+        DATA.get(&Track::Things)
+    };
+
+    c.bench(
+        "things",
+        ParameterizedBenchmark::new(
+            "things",
+            move |b, a| {
+                b.iter(|| SimpleEstimator::with_accuracy(a.as_arg()).analyse(data.iter().cloned()))
+            },
+            vec![Accuracy::Fast, Accuracy::Medium, Accuracy::Slow],
+        ),
+    );
+}
 
 fn bench_estimator_default(c: &mut Criterion) {
     unsafe { DATA.init() }
@@ -154,9 +315,17 @@ fn bench_estimator_slow(c: &mut Criterion) {
 
 criterion_group!(
     benches,
+    bench_bess,
+    bench_blues,
+    bench_campus,
+    bench_rabbits,
+    bench_rent,
+    bench_squatty,
+    bench_stars,
+    bench_things,
     bench_estimator_default,
     bench_estimator_fast,
     bench_estimator_medium,
-    bench_estimator_slow
+    bench_estimator_slow,
 );
 criterion_main!(benches);
